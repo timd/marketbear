@@ -1,0 +1,39 @@
+Market Bear
+http://github.com/timd/marketbear
+
+Author: Tim Duckett
+Email : tim@adoptioncurve.net
+Web   : http://www.adoptioncurve.net
+
+REQUIREMENTS
+============
+
+Ruby 1.8 (not tested with 1.9 yet)
+
+BACKGROUND
+==========
+
+Based on code by James Smith (www.floppy.co.uk)
+
+USAGE
+=====
+
+To use the software, firstly copy config/config_example.yml to config/config.yml.
+
+
+DATA
+====
+
+Applicaiton state is saved into data/state.yml.  The latest market value from the
+datafile is stored, and used to calculate the change in the market price on each run.
+The colour for the bear's eye change is set according to:
+
+State				Eye colour		RED value	GREEN value
+-----				----------		---------	-----------
+Market up			Green			0			255
+Market same			Yellow			255			255
+Market down			Red				255			0
+
+Application state is saved into data/state.yml. The latest year and month from
+the datafile is stored, and checked against the datafile on each run. If the 
+latest date has not changed, updates are not sent out.
