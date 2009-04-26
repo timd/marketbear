@@ -1,4 +1,4 @@
-# Copyright (c) 2008 Tim Duckett (www.adoptioncurve.net)
+# Copyright (c) 2009 Tim Duckett (www.adoptioncurve.net)
 #
 # Based on original code by James Smith (www.floppy.org.uk)
 #
@@ -26,14 +26,17 @@ require 'open-uri'
 require 'date'
 require 'yaml'
 require 'rubygems'
-require 'twitter'
 
+# require 'twitter'
 # require 'csv'
 
 def main
-  # Get config file
+  # Get config file from the config.yml file
   load_config
+  
+  # Get the status from the saved 'state' file
   load_state
+  
   # For each configuration
   @@configs.each_pair do |name, config|
     # Get data
@@ -62,7 +65,6 @@ end
 def load_config
   all_configs = YAML.load_file("#{File.dirname(__FILE__)}/../config/config.yml")
   @@configs = all_configs['datasets']
-  @@twitter_config = all_configs['twitter']
 end
 
 def load_state
