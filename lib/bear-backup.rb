@@ -27,11 +27,6 @@ require 'date'
 require 'yaml'
 require 'rubygems'
 
- gem 'hpricot', '>=0.6'
- require 'hpricot'
- require 'open-uri'
- require 'rubyful_soup'
-
 # require 'twitter'
 # require 'csv'
 
@@ -46,35 +41,25 @@ def main
   @@configs.each_pair do |name, config|
     # Get data
     print "fetching data\n"
-    puts config['data-uri']
- 
-    rawdata = open(config['data_uri']) { |f| Hpricot(f) }
-
-    open(@url,  "User-Agent" => "Ruby/#{RUBY_VERSION}",
-                                "From" => "email@addr.com",
-                                "Referer" => "http://www.igvita.com/blog/") { |f|
-
-                   puts "Fetched document: #{f.data_uri}"#
-
-                  # Save the response body
-                  @response = f.read }
-
-                  # Load the data into the doc variable
-                  rawdata = Hpricot(@response)
-    
-    puts "Rawdata = " + rawdata.to_s
+    rawdata = open(config['data_uri']).read
     # Parse datafile
-    
+    print "parsing data\n"
     data = parse(rawdata)
     # Check if data feed has been updated
-   
-   puts "Data = " + data
-   
+    latest_year = data.last[config['year_col']].to_i
+    latest_month = data.last[config['month_col']].to_i
+    unless @@state and @@state[name] and latest_year == @@state[name]['year'] and latest_month == @@state[name]['month']
+      # Send updates
+      @@state = {} unless @@state
+      @@state[name] = {}
+      @@state[name]['year'] = latest_year
+      @@state[name]['month'] = latest_month
+      print "sending updates\n"
       # Twitter
-      # send_update_to_twitter(data, name, config)
+      send_update_to_twitter(data, name, config)
     end
-    # save_state
-  
+    save_state
+  end
 end
 
 def load_config
@@ -93,9 +78,17 @@ def save_state
 end
 
 def parse(rawdata)
-  puts "Now parsing"
-  data =  (rawdata/"/html/body").inner_html
-  puts data
+  data = []
+  CSV::Reader.parse(rawdata, ' ') do |row|
+    # Dump comments
+    unless row[0] == '#'
+      # Dump empty fields
+      row.delete_if { |item| item.nil? }
+      # Store row in array
+      data << row unless row.empty?
+    end
+    
+  end
   return data
 end
 
