@@ -9,11 +9,13 @@ REQUIREMENTS
 ============
 
 Ruby 1.8 (not tested with 1.9 yet)
+Arduino & Ethernet shield
 
 BACKGROUND
 ==========
 
-Based on code by James Smith (www.floppy.co.uk)
+Ruby components based on code by James Smith (www.floppy.co.uk)
+Arduino components based on code by Bob S (http://www.arduino.cc/cgi-bin/yabb2/YaBB.pl?num=1231812230)
 
 USAGE
 =====
