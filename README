@@ -14,6 +14,10 @@ Arduino & Ethernet shield
 BACKGROUND
 ==========
 
+This project takes a feed from a web-based data source, and controls
+the colour of the panda's eyes.  The background can be found at
+http://www.adoptioncurve.net/archives/2009/03/toy-abuse-for-fun-and-nonprofit.php
+
 Ruby components based on code by James Smith (www.floppy.co.uk)
 Arduino components based on code by Bob S (http://www.arduino.cc/cgi-bin/yabb2/YaBB.pl?num=1231812230)
 

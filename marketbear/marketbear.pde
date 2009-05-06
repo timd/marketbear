@@ -128,34 +128,37 @@ void serialEvent() {
       tagFlag = false;
       dataFlag = true;    // Must be the start of the data itself            
       
-   } else if (inChar != 10) {
+   } else if (inChar != 10) {  // if the char ISN'T a linefeed...
       if (tagFlag) {
          // Add tag char to string
          addChar(inChar, tmpStr);
 
          // Check for </XML> end tag, ignore it
          if ( tagFlag && strcmp(tmpStr, endTag) == 0 ) {
-            clearStr(tmpStr);
-            tagFlag = false;
-            dataFlag = false;
+            clearStr(tmpStr);		// clear out tmpStr
+            tagFlag = false;		// set both tagFlag and dataFlag
+            dataFlag = false;		// to false
          }
       }
       
-      if (dataFlag) {
-         // Add data char to string
-         addChar(inChar, dataStr);
+      if (dataFlag) {				// if this is data, then
+         addChar(inChar, dataStr);	// add the char to dataStr
       }
    }  
   
    // If a LF, process the line
    if (inChar == 10 ) {
 
-/*
+/*////////////////////////////////
+//
+//	This is where the magic goes
+//
+/////////////////////////////////*/
+
       Serial.print("tagStr: ");
       Serial.println(tagStr);
       Serial.print("dataStr: ");
       Serial.println(dataStr);
-*/
 
       // Find specific tags and print data
       if (matchTag("<temp_f>")) {
